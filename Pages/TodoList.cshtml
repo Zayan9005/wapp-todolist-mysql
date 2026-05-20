@@ -1,0 +1,112 @@
+﻿@page
+@model wapp.Pages.TodoListModel
+@{
+    ViewData["Title"] = "To Do List";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <header class="page-header">
+        <h1>To Do List</h1>
+        <p>Add and view your to-do tasks using MySQL database.</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/GradeCalculator">Grade Calculator</a>
+        <a href="/FeedbackForm">Feedback Form</a>
+        <a href="/TodoList">To Do List</a>
+    </nav>
+
+    <main class="container">
+        <section class="card">
+            <h2>Add New Task</h2>
+            <form method="post">
+                <p>
+                    <label>Task: </label><br />
+                    <input type="text" asp-for="Task" required />
+                </p>
+                <p>
+                    <label>Due Date: </label><br />
+                    <input type="date" asp-for="DueDate" />
+                </p>
+                <p>
+                    <label>
+                        <input type="checkbox" asp-for="Completed" /> Completed
+                    </label>
+                </p>
+                <button type="submit">Add Task</button>
+            </form>
+        </section>
+
+        @if (!string.IsNullOrEmpty(Model.Message))
+        {
+            <section class="card success-box">
+                <p>@Model.Message</p>
+            </section>
+        }
+
+        <section class="card">
+            <h2>My Tasks</h2>
+            @if (Model.Todos.Count == 0)
+            {
+                <p>No tasks found.</p>
+            }
+            else
+            {
+                <div class="todo-card-container">
+                    @foreach (var item in Model.Todos)
+                    {
+                        <div class="todo-card @(item.Completed ? "" : "not-completed")">
+                            <h3>@item.Task</h3>
+                            <p>
+                                <strong>Status:</strong> 
+                                @(item.Completed ? "Completed" : "Not Completed")
+                            </p>
+                            <p>
+                                <strong>Due Date:</strong> 
+                                @(item.DueDate.HasValue ? item.DueDate.Value.ToString("yyyy-MM-dd") : "No due date")
+                            </p>
+                            
+                            <div class="action-links" style="margin-top: 10px;">
+                                @if (item.Completed)
+                                {
+                                    <a asp-page="/TodoList" asp-page-handler="ToggleStatus" asp-route-id="@item.Id">
+                                        Mark as Not Completed
+                                    </a>
+                                }
+                                else
+                                {
+                                    <a asp-page="/TodoList" asp-page-handler="ToggleStatus" asp-route-id="@item.Id">
+                                        Mark as Completed
+                                    </a>
+                                }
+                                
+                                <br />
+                                <a asp-page="/TodoList" 
+                                   asp-page-handler="Delete" 
+                                   asp-route-id="@item.Id" 
+                                   onclick="return confirm('Are you sure you want to delete this task?');" 
+                                   style="color: #cb0101; font-weight: bold; display: inline-block; margin-top: 5px;">
+                                    Delete
+                                </a>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
+    </main>
+
+    <footer class="page-footer">
+        <p>&copy; 2026 To Do List App</p>
+    </footer>
+</body>
+</html>

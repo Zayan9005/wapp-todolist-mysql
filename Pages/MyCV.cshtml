@@ -1,0 +1,189 @@
+﻿@page
+@model wapp.Pages.MyCVModel
+@{
+    ViewData["Title"] = "Interactive CV";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.03);
+            --neon: #00d2ff;
+        }
+
+        body {
+            background: radial-gradient(circle at bottom left, #16213e, #0f0c29);
+            color: white;
+            min-height: 100vh;
+            font-family: 'Segoe UI', sans-serif;
+        }
+
+        .cv-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 40px;
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 20px;
+        }
+
+        /* Left Side: Profile & Objective */
+        .sidebar-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 40px;
+            height: fit-content;
+            position: sticky;
+            top: 20px;
+        }
+
+        /* Right Side: Animated Skills & Exp */
+        .main-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 25px;
+            padding: 40px;
+        }
+
+        /* Real-time Animated Skill Bars */
+        .skill-container {
+            margin-bottom: 25px;
+        }
+
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .progress-track {
+            background: rgba(255,255,255,0.1);
+            height: 12px;
+            border-radius: 10px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%; /* Starts at 0 for animation */
+            border-radius: 10px;
+            transition: width 2s cubic-bezier(0.17, 0.67, 0.83, 0.67);
+            position: relative;
+        }
+
+        .progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shine 2s infinite;
+        }
+
+        @@keyframes shine {
+            0% { transform: translateX(-100%); }
+            100% { transform: translateX(100%); }
+        }
+
+        .section-title {
+            color: var(--neon);
+            border-left: 4px solid var(--neon);
+            padding-left: 15px;
+            margin: 40px 0 20px;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/GradeCalculator">Grades</a>
+        <a href="/FeedbackForm">Feedback</a>
+        <a href="/MyCV">My CV</a>
+    </nav>
+
+    <div class="cv-grid">
+        <aside class="sidebar-card">
+            <h1 style="font-size: 2.5rem; margin-bottom: 10px;">@Model.FullName</h1>
+            <p style="color: var(--neon); font-family: monospace;">TP087076 | Web Applications</p>
+            <hr style="border: 0.5px solid rgba(255,255,255,0.1); margin: 20px 0;">
+            <p style="line-height: 1.6; opacity: 0.8;">@Model.Objective</p>
+            
+            <div style="margin-top: 30px;">
+                <h4 style="color: var(--neon);">Contact</h4>
+                <p>📧 zayan9005@@gmail.com</p>
+                <p>📍 Asia Pacific University</p>
+            </div>
+        </aside>
+
+        <main class="main-card">
+            <h2 class="section-title" style="margin-top: 0;">Interactive Skill Matrix</h2>
+            <p style="margin-bottom: 30px; opacity: 0.6;">(Animations refresh in real-time on page entry)</p>
+            
+            @foreach (var skill in Model.TechnicalSkills)
+            {
+                <div class="skill-container">
+                    <div class="skill-header">
+                        <span>@skill.Name</span>
+                        <span class="percentage" data-target="@skill.Level">0%</span>
+                    </div>
+                    <div class="progress-track">
+                        <div class="progress-fill" 
+                             style="background: @skill.Color; width: 0%;" 
+                             data-level="@skill.Level">
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <h2 class="section-title">Education Background</h2>
+            <div style="background: rgba(255,255,255,0.03); padding: 20px; border-radius: 15px;">
+                <h4>BSc (Hons) in Computer Science</h4>
+                <p style="color: var(--neon);">Asia Pacific University (APU) • 2024 - Present</p>
+                <ul style="opacity: 0.8; margin-top: 10px;">
+                    <li>Specializing in System Administration and Web Development.</li>
+                    <li>Current focus: Razor Pages and Object-Oriented Logic.</li>
+                </ul>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Real-time animation on load
+        window.onload = () => {
+            const fills = document.querySelectorAll('.progress-fill');
+            const percents = document.querySelectorAll('.percentage');
+
+            fills.forEach((fill, index) => {
+                const target = fill.getAttribute('data-level');
+                // Trigger the width animation
+                setTimeout(() => {
+                    fill.style.width = target + '%';
+                }, 200 * index);
+
+                // Animate the number counting up
+                let current = 0;
+                const counter = setInterval(() => {
+                    if (current >= target) {
+                        clearInterval(counter);
+                    } else {
+                        current++;
+                        percents[index].innerText = current + '%';
+                    }
+                }, 20);
+            });
+        };
+    </script>
+</body>
+</html>

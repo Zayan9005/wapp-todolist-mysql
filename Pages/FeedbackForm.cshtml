@@ -1,0 +1,139 @@
+﻿@page
+@model wapp.Pages.FeedbackFormModel
+@{
+    ViewData["Title"] = "Module Feedback Portal";
+    Layout = null; 
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --neon-border: rgba(0, 255, 157, 0.3);
+            --accent: #00ff9d; /* Neon Green theme for feedback */
+        }
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .glass-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            border: 1px solid var(--neon-border);
+            border-radius: 24px;
+            padding: 3rem;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.6);
+            margin-bottom: 2rem;
+            transition: transform 0.3s ease;
+        }
+
+        .header-glow {
+            text-align: center;
+            padding: 3rem 0;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 20px var(--accent);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px;
+            margin: 10px 0 25px 0;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            color: white;
+            font-size: 1rem;
+            transition: all 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 15px rgba(0, 255, 157, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+        }
+
+        .submit-btn {
+            background: linear-gradient(90deg, #00ff9d, #00d2ff);
+            color: #000;
+            font-weight: 800;
+            padding: 18px;
+            border: none;
+            border-radius: 12px;
+            width: 100%;
+            cursor: pointer;
+            text-transform: uppercase;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .submit-btn:hover {
+            transform: scale(1.03);
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.5);
+        }
+
+        .success-box {
+            border-left: 6px solid var(--accent);
+            background: rgba(0, 255, 157, 0.05);
+        }
+    </style>
+</head>
+<body>
+    <header class="header-glow">
+        <h1>Feedback Portal</h1>
+        <p style="opacity: 0.7; letter-spacing: 2px;">Share your academic experience</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/GradeCalculator">Grade Master</a>
+        <a href="/FeedbackForm">Feedback</a>
+        <a href="/CourseRegistration">Registration</a>
+    </nav>
+
+    <main class="container">
+        <div class="glass-card">
+            <h2 style="color: var(--accent); margin-top: 0;">Submit Feedback</h2>
+            <form method="post">
+                <label>Full Name</label>
+                <input type="text" asp-for="FullName" class="form-input" placeholder="e.g. Zayan" required />
+
+                <label>Module Name</label>
+                <input type="text" asp-for="ModuleName" class="form-input" placeholder="e.g. Web Applications" required />
+
+                <label>Detailed Feedback</label>
+                <textarea asp-for="Feedback" rows="5" class="form-input" placeholder="Tell us more about the module..." required></textarea>
+
+                <button type="submit" class="submit-btn">Send Feedback</button>
+            </form>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ConfirmationMessage))
+        {
+            <div class="glass-card success-box">
+                <h2 style="color: var(--accent);">✔ Submission Successful</h2>
+                <p style="font-size: 1.1rem; line-height: 1.6;">@Model.ConfirmationMessage</p>
+                
+                <div style="margin-top: 2rem; padding: 1.5rem; background: rgba(0,0,0,0.2); border-radius: 12px;">
+                    <span style="color: var(--accent); font-weight: bold; font-size: 0.8rem; text-transform: uppercase;">Your Content:</span>
+                    <p style="margin-top: 0.5rem; font-style: italic; color: #ccc;">"@Model.Feedback"</p>
+                </div>
+            </div>
+        }
+    </main>
+
+    <footer class="page-footer">
+        <p>&copy; 2026 Asia Pacific University Feedback System</p>
+    </footer>
+</body>
+</html>

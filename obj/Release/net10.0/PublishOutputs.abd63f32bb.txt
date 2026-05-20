@@ -1,0 +1,8 @@
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Release\net10.0\publish\wapp.exe
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Release\net10.0\publish\appsettings.Development.json
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Release\net10.0\publish\appsettings.json
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Release\net10.0\publish\wapp.dll
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Release\net10.0\publish\wapp.deps.json
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Release\net10.0\publish\wapp.runtimeconfig.json
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Release\net10.0\publish\wapp.pdb
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Release\net10.0\publish\MySqlConnector.dll

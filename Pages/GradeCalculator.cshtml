@@ -1,0 +1,84 @@
+﻿@page
+@model wapp.Pages.GradeCalculatorModel
+@{
+    ViewData["Title"] = "APU Grade Master";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        /* Specific enhancements for this page */
+        .grade-badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            margin-bottom: 10px;
+        }
+        .distinction { background: linear-gradient(45deg, #ffd700, #ffa500); color: #000; box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
+        .merit { background: linear-gradient(45deg, #00d2ff, #3a7bd5); color: #fff; }
+        .pass { background: linear-gradient(45deg, #56ab2f, #a8e063); color: #000; }
+        .fail { background: linear-gradient(45deg, #cb2d3e, #ef473a); color: #fff; }
+        
+        .score-display {
+            font-size: 3rem;
+            font-weight: 800;
+            margin: 10px 0;
+            background: -webkit-linear-gradient(#fff, #888);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <h1 class="display-4">APU Grade Master</h1>
+        <p>Official Assessment Logic & Result Analysis</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/GradeCalculator">Grade Calculator</a>
+        <a href="/FeedbackForm">Feedback Form</a>
+        <a href="/CourseRegistration">Course Registration</a>
+    </nav>
+
+    <main class="container">
+        <section class="card">
+            <h2>Calculate Performance</h2>
+            <form method="post">
+                <div class="form-group">
+                    <label>Student Name</label>
+                    <input type="text" asp-for="StudentName" placeholder="Enter name..." required />
+                </div>
+                <div class="form-group">
+                    <label>Assessment Score (0-100)</label>
+                    <input type="number" asp-for="Grade" min="0" max="100" placeholder="Enter marks..." required />
+                </div>
+                <button type="submit">Analyze Results</button>
+            </form>
+        </section>
+
+        @if (!string.IsNullOrEmpty(Model.ResultMessage))
+        {
+            <section class="card" style="text-align: center; border-top: 4px solid var(--accent-color);">
+                <div class="grade-badge @Model.StatusClass">@Model.GradeCategory</div>
+                <div class="score-display">@Model.Grade%</div>
+                <h3 style="color: #fff; margin-bottom: 15px;">@Model.ResultMessage</h3>
+                <p style="color: #888;">Result processed based on APU Academic Regulations.</p>
+            </section>
+        }
+    </main>
+
+    <footer class="page-footer">
+        <p>&copy; 2026 Asia Pacific University System</p>
+    </footer>
+</body>
+</html>

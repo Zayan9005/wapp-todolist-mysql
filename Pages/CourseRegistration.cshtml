@@ -1,0 +1,141 @@
+﻿@page
+@model wapp.Pages.CourseRegistrationModel
+@{
+    ViewData["Title"] = "Elite Course Registration";
+    Layout = null; // Overriding layout for custom sexy feel
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.05);
+            --neon-blue: #00d2ff;
+            --neon-purple: #9d50bb;
+        }
+
+        body {
+            background: radial-gradient(circle at top right, #1a1a2e, #16213e);
+            min-height: 100vh;
+        }
+
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+            margin-bottom: 30px;
+        }
+
+        .header-gradient {
+            background: linear-gradient(to right, var(--neon-blue), var(--neon-purple));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .btn-sexy {
+            background: linear-gradient(45deg, var(--neon-blue), var(--neon-purple));
+            border: none;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-sexy:hover {
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.6);
+            transform: scale(1.02);
+        }
+
+        .fee-highlight {
+            color: var(--neon-blue);
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <header class="page-header">
+        <h1 class="header-gradient">Course Registration</h1>
+        <p>APU Elite Portal - 2026</p>
+    </header>
+
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/GradeCalculator">Grades</a>
+        <a href="/FeedbackForm">Feedback</a>
+        <a href="/CourseRegistration">Registration</a>
+    </nav>
+
+    <main class="container">
+        <div class="glass-card">
+            <h2>Registration Details</h2>
+            <form method="post">
+                <label>Full Name</label>
+                <input type="text" asp-for="FullName" placeholder="e.g. Jason Ng" required />
+
+                <label>Student ID</label>
+                <input type="text" asp-for="StudentId" placeholder="TP000000" required />
+
+                <label>Programme</label>
+                <input type="text" asp-for="Programme" placeholder="Computer Science" required />
+
+                <label>Select Course</label>
+                <select asp-for="SelectedCourse" required>
+                    <option value="">-- Choose --</option>
+                    <option value="Web Applications">Web Applications</option>
+                    <option value="Database Systems">Database Systems</option>
+                    <option value="Programming">Programming</option>
+                </select>
+
+                <label>Study Mode</label>
+                <select asp-for="StudyMode" required>
+                    <option value="Full-Time">Full-Time</option>
+                    <option value="Part-Time">Part-Time</option>
+                    <option value="Online">Online</option>
+                </select>
+
+                <label>Payment Method</label>
+                <select asp-for="PaymentMethod" required>
+                    <option value="Full Payment">Full Payment (10% Discount)</option>
+                    <option value="Installment">Installment</option>
+                </select>
+
+                <button type="submit" class="btn-sexy">Submit Registration</button>
+            </form>
+        </div>
+
+        @if (!string.IsNullOrEmpty(Model.ConfirmationMessage))
+        {
+            <div class="glass-card animated fadeIn">
+                <h2 style="color: #4ade80;">✔ @Model.ConfirmationMessage</h2>
+                <p><strong>@Model.ModeMessage</strong></p>
+                <hr style="border: 0.5px solid rgba(255,255,255,0.1)" />
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 20px;">
+                    <div>
+                        <p>Original Fee: RM @Model.OriginalFee.ToString("0.00")</p>
+                        <p>Discount Rate: @Model.DiscountRate%</p>
+                        <p>Saved: <span style="color: #ff4757;">RM @Model.DiscountAmount.ToString("0.00")</span></p>
+                    </div>
+                    <div style="text-align: right;">
+                        <p>Final Payable Amount</p>
+                        <p class="fee-highlight">RM @Model.FinalFee.ToString("0.00")</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </main>
+</body>
+</html>

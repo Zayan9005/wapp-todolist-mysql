@@ -1,0 +1,22 @@
+﻿@page
+@model ErrorModel
+@{
+    ViewData["Title"] = "System Error";
+}
+
+<div class="portal-card" style="border: 1px solid #ff4d4d; background: rgba(255, 77, 77, 0.05);">
+    <h1 style="color: #ff4d4d; font-size: 4rem; margin: 0;">!</h1>
+    <h2 style="color: white;">System Error</h2>
+    <p style="color: rgba(255,255,255,0.6);">The request could not be processed at this time.</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <code style="background: rgba(0,0,0,0.3); padding: 5px 10px; border-radius: 5px; color: #ff4d4d;">
+            Request ID: @Model.RequestId
+        </code>
+    }
+
+    <div style="margin-top: 30px;">
+        <a href="/" class="sexy-link" style="display: inline-block; width: auto; padding: 10px 30px;">Back to Safety</a>
+    </div>
+</div>

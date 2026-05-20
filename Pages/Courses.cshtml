@@ -1,0 +1,150 @@
+﻿@page
+@model wapp.Pages.CoursesModel
+@{
+    ViewData["Title"] = "Module Dashboard";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        :root {
+            --accent: #00d2ff;
+            --glass: rgba(255, 255, 255, 0.03);
+        }
+
+        body {
+            background: #0f0c29;
+            background: radial-gradient(circle at bottom right, #1e2a4a, #0f0c29);
+            color: white;
+            min-height: 100vh;
+        }
+
+        .dashboard-container {
+            max-width: 1100px;
+            margin: 60px auto;
+            padding: 20px;
+        }
+
+        .current-badge {
+            display: inline-block;
+            background: rgba(0, 210, 255, 0.1);
+            border: 1px solid var(--accent);
+            padding: 8px 20px;
+            border-radius: 50px;
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 20px;
+            animation: pulse 2s infinite;
+        }
+
+        @@keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(0, 210, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 210, 255, 0); }
+        }
+
+        .course-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 40px;
+        }
+
+        .module-card {
+            background: var(--glass);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .module-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--accent);
+            background: rgba(255, 255, 255, 0.07);
+        }
+
+        .module-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .progress-bar-bg {
+            background: rgba(255, 255, 255, 0.1);
+            height: 6px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 10px;
+            background: linear-gradient(90deg, #00d2ff, #9d50bb);
+            box-shadow: 0 0 10px var(--accent);
+            transition: width 1.5s ease-in-out;
+        }
+
+        .reminder-box {
+            margin-top: 50px;
+            padding: 25px;
+            background: rgba(255, 165, 0, 0.05);
+            border-radius: 15px;
+            border: 1px dashed orange;
+            color: #ffb86c;
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="/">Home</a>
+        <a href="/GradeCalculator">Grades</a>
+        <a href="/Courses">Courses</a>
+        <a href="/Contact">Contact</a>
+    </nav>
+
+    <div class="dashboard-container">
+        <header style="text-align: center; margin-bottom: 60px;">
+            <div class="current-badge">Currently Learning: @Model.CurrentModule</div>
+            <h1 style="font-size: 3rem; margin-top: 10px;">Module Dashboard</h1>
+            <p style="opacity: 0.6;">Your academic progress and module roadmap.</p>
+        </header>
+
+        <div class="course-grid">
+            @foreach (var module in Model.Modules)
+            {
+                <div class="module-card">
+                    <span class="module-icon">@module.Icon</span>
+                    <h3>@module.Title</h3>
+                    <p style="opacity: 0.7; font-size: 0.9rem; min-height: 50px;">@module.Description</p>
+                    
+                    <div style="display: flex; justify-content: space-between; margin-top: 20px; font-size: 0.8rem;">
+                        <span>Progress</span>
+                        <span>@module.Progress%</span>
+                    </div>
+                    <div class="progress-bar-bg">
+                        <div class="progress-bar-fill" style="width: @module.Progress%"></div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <div class="reminder-box">
+            <strong>⚠️ Academic Reminder:</strong>
+            <p style="margin: 5px 0 0;">Always save your files before running the application. Verify your .cshtml logic regularly.</p>
+        </div>
+    </div>
+
+    <footer class="page-footer">
+        <p>&copy; 2026 APU Web Applications Portal</p>
+    </footer>
+</body>
+</html>

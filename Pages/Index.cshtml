@@ -1,0 +1,104 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "APU Student Portal";
+}
+
+<style>
+    .hero-section {
+        height: 85vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+    .welcome-title {
+        font-size: clamp(2rem, 8vw, 4.5rem);
+        font-weight: 900;
+        margin-bottom: 5px;
+        background: linear-gradient(to right, #00d2ff, #9d50bb);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        text-transform: uppercase;
+        letter-spacing: 5px;
+    }
+
+    .portal-card {
+        background: rgba(255, 255, 255, 0.05);
+        backdrop-filter: blur(15px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 40px;
+        border-radius: 30px;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        width: 90%;
+        max-width: 650px;
+    }
+
+    .link-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+        margin-top: 25px;
+    }
+
+    .sexy-link {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 18px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 15px;
+        color: #fff !important;
+        text-decoration: none !important;
+        font-weight: 600;
+        transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .sexy-link:hover {
+        background: linear-gradient(45deg, #00d2ff, #9d50bb);
+        transform: translateY(-8px) scale(1.02);
+        box-shadow: 0 15px 30px rgba(0, 210, 255, 0.4);
+    }
+
+    .highlight-link {
+        grid-column: span 2;
+        border: 1px solid #00d2ff;
+        background: rgba(0, 210, 255, 0.05);
+    }
+</style>
+
+<div class="hero-section">
+    <h1 class="welcome-title">Welcome, @Model.StudentName</h1>
+    <p style="color: rgba(255,255,255,0.6); margin-bottom: 30px; font-size: 1.1rem; letter-spacing: 1px;">
+        APU @Model.ModuleName - Portfolio Portal
+    </p>
+
+    <div class="portal-card">
+        <h3 style="color: #fff; margin-bottom: 5px; font-weight: 300;">Explore My Razor Pages</h3>
+        
+        <div class="link-grid">
+            @* Primary Lab 4 Requirement *@
+            <a href="/CourseRegistration" class="sexy-link highlight-link">🚀 Course Registration</a>
+            
+            @* Database Features *@
+            <a href="/TodoList" class="sexy-link highlight-link" style="border-color: #9d50bb; background: rgba(157, 80, 187, 0.05);">📝 Live SQL Todo List</a>
+            
+            @* Academic Tools *@
+            <a href="/GradeCalculator" class="sexy-link">📊 Grade Master</a>
+            <a href="/Courses" class="sexy-link">📚 My Courses</a>
+            
+            @* Identity & Professional *@
+            <a href="/StudentInfo" class="sexy-link">📂 Student Info</a>
+            <a href="/Profile" class="sexy-link">👤 Profile</a>
+            <a href="/MyCV" class="sexy-link">📄 My CV</a>
+            
+            @* Communication & System *@
+            <a href="/Contact" class="sexy-link">📧 Contact</a>
+            <a href="/FeedbackForm" class="sexy-link">💬 Feedback</a>
+            <a href="/Error" class="sexy-link" style="border-color: #ff4d4d; color: #ff4d4d !important;">⚠️ Error Test</a>
+        </div>
+    </div>
+</div>
