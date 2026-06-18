@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("wapp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2f3638536c934c9d614b1362e84d95e65d7416cb")]
 [assembly: System.Reflection.AssemblyProductAttribute("wapp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("wapp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

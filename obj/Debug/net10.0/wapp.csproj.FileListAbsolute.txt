@@ -97,3 +97,5 @@ C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\obj\Debug\net10.0\compressed
 C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Debug\net10.0\MySqlConnector.dll
 C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\obj\Debug\net10.0\wapp.csproj.AssemblyReference.cache
 C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\obj\Debug\net10.0\wapp.csproj.Up2Date
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\obj\Debug\net10.0\wapp.sourcelink.json
+C:\Users\zayan\OneDrive\Desktop\Languages\HTML\wapp\bin\Debug\net10.0\BCrypt-Net-Next.dll

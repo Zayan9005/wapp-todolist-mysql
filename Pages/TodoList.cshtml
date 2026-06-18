@@ -2,59 +2,62 @@
 @model wapp.Pages.TodoListModel
 @{
     ViewData["Title"] = "To Do List";
-    Layout = null;
 }
 
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="utf-8" />
-    <title>@ViewData["Title"]</title>
-    <link rel="stylesheet" href="~/css/site.css" />
-</head>
-<body>
-    <header class="page-header">
-        <h1>To Do List</h1>
-        <p>Add and view your to-do tasks using MySQL database.</p>
-    </header>
+<header class="page-header" style="text-align: center; padding: 20px 0;">
+    <h1>To Do List</h1>
+    <p>Add, view, update and edit your to-do tasks using MySQL database.</p>
+</header>
 
-    <nav class="navbar">
-        <a href="/">Home</a>
-        <a href="/GradeCalculator">Grade Calculator</a>
-        <a href="/FeedbackForm">Feedback Form</a>
-        <a href="/TodoList">To Do List</a>
-    </nav>
+@if (ViewContext.HttpContext.Session.GetInt32("UserId") != null)
+{
+    <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); padding: 20px; border-radius: 12px; margin-bottom: 30px; width: 100%; text-align: center; box-sizing: border-box;">
+        <h2 style="color: #fff; margin: 0; font-weight: 800; background: linear-gradient(to right, #00d2ff, #9d50bb); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">
+            Welcome back, @ViewContext.HttpContext.Session.GetString("FullName")
+        </h2>
+        <p style="color: rgba(255,255,255,0.5); font-size: 0.9rem; margin: 5px 0 0 0;">Your dashboard is connected and secured.</p>
+    </div>
+}
 
-    <main class="container">
+<div class="todo-layout-grid">
+    
+    <div class="left-column">
         <section class="card">
             <h2>Add New Task</h2>
+
             <form method="post">
                 <p>
                     <label>Task: </label><br />
                     <input type="text" asp-for="Task" required />
                 </p>
+
                 <p>
                     <label>Due Date: </label><br />
                     <input type="date" asp-for="DueDate" />
                 </p>
+
                 <p>
                     <label>
                         <input type="checkbox" asp-for="Completed" /> Completed
                     </label>
                 </p>
+
                 <button type="submit">Add Task</button>
             </form>
         </section>
 
         @if (!string.IsNullOrEmpty(Model.Message))
         {
-            <section class="card success-box">
-                <p>@Model.Message</p>
+            <section class="card success-box" style="border-color: #2ecc71; background: rgba(46, 204, 113, 0.1);">
+                <p style="color: #2ecc71; margin: 0; font-weight: 600;">@Model.Message</p>
             </section>
         }
+    </div>
 
+    <div class="right-column">
         <section class="card">
             <h2>My Tasks</h2>
+
             @if (Model.Todos.Count == 0)
             {
                 <p>No tasks found.</p>
@@ -66,47 +69,125 @@
                     {
                         <div class="todo-card @(item.Completed ? "" : "not-completed")">
                             <h3>@item.Task</h3>
+
                             <p>
-                                <strong>Status:</strong> 
+                                <strong>Status:</strong>
                                 @(item.Completed ? "Completed" : "Not Completed")
                             </p>
+
                             <p>
-                                <strong>Due Date:</strong> 
+                                <strong>Due Date:</strong>
                                 @(item.DueDate.HasValue ? item.DueDate.Value.ToString("yyyy-MM-dd") : "No due date")
                             </p>
-                            
+
                             <div class="action-links" style="margin-top: 10px;">
                                 @if (item.Completed)
                                 {
-                                    <a asp-page="/TodoList" asp-page-handler="ToggleStatus" asp-route-id="@item.Id">
-                                        Mark as Not Completed
+                                    <a asp-page="/TodoList"
+                                       asp-page-handler="ToggleStatus"
+                                       asp-route-id="@item.Id"
+                                       class="todo-action-btn incomplete-btn">
+                                         Mark as Not Completed
                                     </a>
                                 }
                                 else
                                 {
-                                    <a asp-page="/TodoList" asp-page-handler="ToggleStatus" asp-route-id="@item.Id">
-                                        Mark as Completed
+                                    <a asp-page="/TodoList"
+                                       asp-page-handler="ToggleStatus"
+                                       asp-route-id="@item.Id"
+                                       class="todo-action-btn complete-btn">
+                                         Mark as Completed
                                     </a>
                                 }
-                                
-                                <br />
-                                <a asp-page="/TodoList" 
-                                   asp-page-handler="Delete" 
-                                   asp-route-id="@item.Id" 
-                                   onclick="return confirm('Are you sure you want to delete this task?');" 
-                                   style="color: #cb0101; font-weight: bold; display: inline-block; margin-top: 5px;">
+
+                                <a asp-page="/TodoList"
+                                   asp-page-handler="Delete"
+                                   asp-route-id="@item.Id"
+                                   class="todo-action-btn delete-btn"
+                                   onclick="return confirm('Are you sure you want to delete this task?');">
                                     Delete
                                 </a>
+
+                                <button type="button"
+                                        class="edit-btn"
+                                        data-id="@item.Id"
+                                        data-task="@item.Task"
+                                        data-completed="@item.Completed.ToString().ToLower()"
+                                        data-due-date="@(item.DueDate.HasValue ? item.DueDate.Value.ToString("yyyy-MM-dd") : "")">
+                                    Edit
+                                </button>
                             </div>
                         </div>
                     }
                 </div>
             }
         </section>
-    </main>
+    </div>
 
-    <footer class="page-footer">
-        <p>&copy; 2026 To Do List App</p>
-    </footer>
-</body>
-</html>
+</div>
+
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <span id="closeModal" class="close">&times;</span>
+
+        <h2>Edit Task</h2>
+
+        <form method="post" asp-page-handler="Edit">
+            <input type="hidden" asp-for="EditId" />
+
+            <p>
+                <label>Task:</label><br />
+                <input type="text" asp-for="EditTask" required />
+            </p>
+
+            <p>
+                <label>Due Date:</label><br />
+                <input type="date" asp-for="EditDueDate" />
+            </p>
+
+            <p>
+                <label>
+                    <input type="checkbox" asp-for="EditCompleted" />
+                    Completed
+                </label>
+            </p>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<footer class="page-footer" style="text-align: center; padding: 20px 0; margin-top: 40px;">
+    <p>&copy; 2026 To Do List App</p>
+</footer>
+
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $(".edit-btn").click(function () {
+                var id = $(this).data("id");
+                var task = $(this).data("task");
+                var completed = String($(this).data("completed")).toLowerCase() === "true";
+                var dueDate = $(this).attr("data-due-date");
+
+                $("#EditId").val(id);
+                $("#EditTask").val(task);
+                $("#EditCompleted").prop("checked", completed);
+                $("#EditDueDate").val(dueDate);
+
+                $("#editModal").show();
+            });
+
+            $("#closeModal").click(function () {
+                $("#editModal").hide();
+            });
+
+            $(window).click(function (event) {
+                if ($(event.target).is("#editModal")) {
+                    $("#editModal").hide();
+                }
+            });
+        });
+    </script>
+}

@@ -1,0 +1,45 @@
+﻿@page
+@model wapp.Pages.RegisterModel
+@{
+    ViewData["Title"] = "Register Account";
+}
+
+<div style="display: flex; justify-content: center; align-items: center; padding-top: 40px;">
+    <section class="card" style="width: 100%; max-width: 450px;">
+        <h2>Create an Account</h2>
+        <p style="color: rgba(255,255,255,0.6); margin-bottom: 20px;">Fill out the fields below to register your dashboard access.</p>
+
+        <form method="post">
+            <p>
+                <label>Full Name:</label><br />
+                <input type="text" asp-for="FullName" required placeholder="John Doe" />
+            </p>
+
+            <p>
+                <label>Email Address:</label><br />
+                <input type="email" asp-for="Email" required placeholder="example@domain.com" />
+            </p>
+
+            <p>
+                <label>Password:</label><br />
+                <input type="password" asp-for="Password" required placeholder="••••••••" />
+            </p>
+
+            <p style="margin-top: 20px;">
+                <button type="submit">Sign Up</button>
+            </p>
+        </form>
+
+        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        {
+            <div style="margin-top: 15px; color: #e74c3c; font-weight: 600; font-size: 0.9rem;">
+                ⚠️ @Model.ErrorMessage
+            </div>
+        }
+
+        <hr style="border: 0; border-top: 1px solid rgba(255,255,255,0.1); margin: 20px 0;" />
+        <p style="text-align: center; font-size: 0.9rem; color: rgba(255,255,255,0.6); margin: 0;">
+            Already registered? <a href="/Login" style="color: #00d2ff; text-decoration: none; font-weight: 600;">Log In here</a>
+        </p>
+    </section>
+</div>
